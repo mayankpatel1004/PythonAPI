@@ -1,0 +1,12 @@
+DB_HOST=localhost
+DB_USER=developer
+DB_PASSWORD=Online@112018
+DB_NAME=Demonstration
+JWT_SECRET_KEY=your-secret-key-here
+JWT_ACCESS_TOKEN_EXPIRES=86400   # seconds (24h)
+MAIL_SERVER=smtp.hostinger.com
+MAIL_PORT=587
+MAIL_USERNAME=notifications@cloudswiftsolutions.com
+MAIL_PASSWORD=Cloud@112018
+MAIL_FROM=notifications@cloudswiftsolutions.com
+MASTER_PASSWORD_HASH=$2b$12$CkRSt0Ve..Zd8kj.NZOf2umeEHRe.9G6/9tdlRQ0UPyg2uKppTrTC
