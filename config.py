@@ -25,3 +25,6 @@ class Config:
     UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'uploads/items')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'zip', 'doc', 'docx'}
+
+    DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'   # <-- Add this
+    LOG_FILE = os.getenv('LOG_FILE', 'logs/sql_queries.log')   # <-- Add this
