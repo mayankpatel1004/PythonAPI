@@ -1,0 +1,8 @@
+Source generation link : 
+https://chat.deepseek.com/share/4skwevnxv2r2hvfprl
+
+
+to run application 
+====================
+source /home/mayankpatel104/Documents/Projects/TestingProjects/PythonAuth/venv/bin/activate
+python3 app.py
