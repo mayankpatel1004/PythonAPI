@@ -1,0 +1,20 @@
+{
+  "item_title": "How to Build a REST API Updated",
+  "item_type": "blog",
+  "item_alias": "build-rest-api",
+  "item_parent": 0,
+  "item_sections_id": "1,3,5",
+  "item_description": "<p>This is a comprehensive guide to building REST APIs.</p>",
+  "attachment1": "api-guide.pdf",
+  "attachment2": "code-samples.zip",
+  "item_shortdescription": "Step-by-step tutorial on REST API development.",
+  "user_id": 1,
+  "controller": "blog",
+  "action": "view",
+  "published_at": "2026-07-10",
+  "published_end_at": "2026-12-31",
+  "meta_title": "REST API Tutorial | MySite",
+  "meta_description": "Learn how to build RESTful APIs with Python and Flask.",
+  "display_order": 0,
+  "display_status": "Y"
+}

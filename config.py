@@ -20,3 +20,8 @@ class Config:
     MASTER_PASSWORD_HASH = os.getenv('MASTER_PASSWORD_HASH')
     # Plaintext fallback (only for development – remove in production)
     MASTER_PASSWORD_PLAIN = os.getenv('MASTER_PASSWORD_PLAIN')
+
+
+    UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'uploads/items')
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'zip', 'doc', 'docx'}
