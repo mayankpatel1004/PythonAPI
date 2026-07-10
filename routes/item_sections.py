@@ -1,19 +1,19 @@
+import os
 from flask import Blueprint, request, jsonify
 from middleware import token_required, role_required
 from db import db
+from utils.file_upload import save_uploaded_file
 
 sections_bp = Blueprint('item_sections', __name__, url_prefix='/api/item-sections')
-
 
 # ------------------- GET all sections (list) -------------------
 @sections_bp.route('/', methods=['GET'])
 @token_required
 def get_sections():
-    """Get all sections (non-deleted) ordered by display_order."""
     sections = db.execute_query(
         """SELECT item_section_id, section_title, section_alias, item_type,
-                  description, meta_title, meta_description, display_order,
-                  display_status, created_at, updated_at
+                  description, attachment1, meta_title, meta_description,
+                  display_order, display_status, created_at, updated_at
            FROM item_section
            WHERE deleted_status = 'N'
            ORDER BY display_order"""
@@ -24,11 +24,10 @@ def get_sections():
 @sections_bp.route('/<int:section_id>', methods=['GET'])
 @token_required
 def get_section(section_id):
-    """Get a single section by ID."""
     section = db.execute_one(
         """SELECT item_section_id, section_title, section_alias, item_type,
-                  description, meta_title, meta_description, display_order,
-                  display_status, created_at, updated_at
+                  description, attachment1, meta_title, meta_description,
+                  display_order, display_status, created_at, updated_at
            FROM item_section
            WHERE item_section_id = %s AND deleted_status = 'N'""",
         (section_id,)
@@ -37,12 +36,24 @@ def get_section(section_id):
         return jsonify({'message': 'Section not found'}), 404
     return jsonify(section), 200
 
-# ------------------- CREATE a new section -------------------
+# ------------------- CREATE a new section (JSON + multipart) -------------------
 @sections_bp.route('/', methods=['POST'])
 @token_required
-@role_required([1, 2])  # Only Developer/Super Admin
+@role_required([1, 2])
 def create_section():
-    data = request.get_json()
+    # Determine request type
+    if request.content_type and 'multipart/form-data' in request.content_type:
+        data = request.form.to_dict()
+        # Handle file upload
+        attachment1 = save_uploaded_file(request.files.get('attachment1'))
+        if attachment1:
+            data['attachment1'] = attachment1
+    else:
+        data = request.get_json()
+        if not data:
+            return jsonify({'message': 'Invalid JSON or form-data'}), 400
+
+    # Validate required fields
     required = ['section_title', 'item_type']
     if not all(k in data for k in required):
         return jsonify({'message': 'Missing required fields: section_title, item_type'}), 400
@@ -52,7 +63,6 @@ def create_section():
     if not alias:
         alias = data['section_title'].lower().replace(' ', '-').replace('&', 'and')
 
-    # Optional parent_id
     parent_id = data.get('item_section_parent_id', 0)
 
     insert_id = db.execute_insert(
@@ -69,25 +79,24 @@ def create_section():
             alias,
             data['item_type'],
             data.get('description', ''),
-            data.get('attachment1'),  # could be file path
+            data.get('attachment1'),
             0,  # user_id default
             data.get('meta_title', ''),
             data.get('meta_description', ''),
             data.get('display_order', 0),
             data.get('display_status', 'Y'),
             request.user_id,
-            '',  # created_by_name (optional)
+            '',  # created_by_name
             request.role_id
         )
     )
     return jsonify({'id': insert_id, 'message': 'Section created'}), 201
 
-# ------------------- UPDATE an existing section -------------------
+# ------------------- UPDATE an existing section (JSON + multipart) -------------------
 @sections_bp.route('/<int:section_id>', methods=['PUT'])
 @token_required
 @role_required([1, 2])
 def update_section(section_id):
-    data = request.get_json()
     # Check if section exists
     existing = db.execute_one(
         "SELECT item_section_id FROM item_section WHERE item_section_id = %s AND deleted_status = 'N'",
@@ -95,6 +104,18 @@ def update_section(section_id):
     )
     if not existing:
         return jsonify({'message': 'Section not found'}), 404
+
+    # Determine request type
+    if request.content_type and 'multipart/form-data' in request.content_type:
+        data = request.form.to_dict()
+        # Handle file upload – if new file, save and replace
+        attachment1 = save_uploaded_file(request.files.get('attachment1'))
+        if attachment1:
+            data['attachment1'] = attachment1
+    else:
+        data = request.get_json()
+        if not data:
+            return jsonify({'message': 'Invalid JSON or form-data'}), 400
 
     # Allowed fields to update
     allowed_fields = [
