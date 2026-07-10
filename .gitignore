@@ -3,9 +3,9 @@
 upload/items/*
 upload/sections/*
 
-# Allow the folders themselves to be tracked
-!upload/items/
-!upload/sections/
+# Explicitly allow the .gitkeep files so the folders are tracked
+!upload/items/.gitkeep
+!upload/sections/.gitkeep
 
 
 # --- Python generated files ---
