@@ -26,5 +26,8 @@ class Config:
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'zip', 'doc', 'docx'}
 
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-for-sessions')
+    SESSION_TYPE = 'filesystem'   # optional, but we'll use default Flask sessions
+
     DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'   # <-- Add this
     LOG_FILE = os.getenv('LOG_FILE', 'logs/sql_queries.log')   # <-- Add this

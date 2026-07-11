@@ -5,4 +5,10 @@ https://chat.deepseek.com/share/4skwevnxv2r2hvfprl
 to run application 
 ====================
 source /home/mayankpatel104/Documents/Projects/TestingProjects/PythonAuth/venv/bin/activate
+cd /home/mayankpatel104/Documents/Projects/TestingProjects/PythonAuth/
 python3 app.py
+
+
+For hash password
+
+source /home/mayankpatel104/Documents/Projects/TestingProjects/PythonAuth/venv/bin/activate

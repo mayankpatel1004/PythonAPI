@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, Developer!</h1>
+        <p>You are logged in as user ID: {{user}}</p>
+        <div class="nav">
+            <a href="/admin/users">Manage Users</a>
+            <a href="/admin/items">Manage Items</a>
+            <a href="/admin/sections">Manage Sections</a>
+            <a href="/logout">Logout</a>
+        </div>
+        <hr>
+        <p>This is your admin dashboard. (Handlebars rendering)</p>
+        <p>For other users, they will receive a JSON token upon login.</p>
+    </div>
+</body>
+</html>
